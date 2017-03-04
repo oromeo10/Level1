@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <link rel="stylesheet" type="text/css" href="numbuttons.css">
+    <style>
+    table{
+      border-spacing: 0;
+      width: 400px;
+      height: 600px;
+      background-color: #32CD32;
+    }
+    tr{
+      height: 100px;
+
+    }
+    td{
+      padding: 0; margin: 0;
+      height: 50px;
+    }
+    #monitor{
+      margin: 20px;
+      width: 360px;
+      height: 160px;
+      border: 0px;
+      background-color: white;
+      font-family: monospace;
+      text-align: right;
+      font-size: 160px;
+    }
+	#0{
+	
+	}
+	#1{
+	
+	}
+	#2{
+	
+	}
+	#3{
+	
+	}
+	#4{
+	
+	}
+	#5{
+	
+	}
+	#6{
+	
+	}
+	#7{
+	
+	}
+	#8{
+	
+	}
+	#9{
+	
+	}
+    div.button{
+      position:relative;
+      margin: 10px;
+      width: 80px;
+      height: 80px;
+      border: 0;
+      background-color: black;
+      font-family: monospace;
+      font-size: 70px;
+      text-align: center;
+	  color: white;
+      cursor: pointer;
+      -webkit-user-select:none;
+    }
+    div.button:hover{
+      position: relative;
+      top: -5px;
+      left: -5px;
+      box-shadow: 10px 10px 10px;
+    }
+    div.button:active{
+      position: relative;
+      top: 5px;
+      left: 5px;
+      box-shadow: 0 0 0;
+    }
+    </style>
+    <meta charset="utf-8">
+    <title>Demo</title>
+  </head>
+  <body>
+    <table>
+      <tr>
+        <td colspan="4">
+          <div id="monitor">
+            0
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <div class="button" id= "plus" onclick="add()">
+            +
+          </div>
+        </td>
+        <td>
+          <div class="button" id= "minus" >
+            -
+          </div>
+		  
+        </td>
+		<td>  
+		<div class="button" id ="times" >
+            *
+          </div>
+		</td>
+		
+		<td> 
+		<div class="button" id= "over" >
+            /
+          </div>
+		</td>
+      </tr>
+	        
+			<tr>
+        <td>
+          <div class="button" id= "7"onclick="display(id)">
+            7
+          </div>
+        </td>
+        <td>
+          <div class="button" id= "8" onclick="display(id)">
+            8
+          </div>
+		  
+        </td>
+		<td>  
+		<div class="button" id= "9" onclick="display(id)">
+            9
+          </div>
+		</td>
+		
+		<td> 
+		<div class="button" style="height: 180px" onclick="zero()">
+            C
+          </div>
+		</td>
+      </tr>
+      <tr>
+        <td>
+          <div class="button" id="4" onclick="display(id)">
+            4
+          </div>
+        </td>
+        <td>
+          <div class="button" id= "5" onclick="display(id)">
+            5
+          </div>
+		  
+        </td>
+		<td>  
+		<div class="button" id="6" onclick="display(id)">
+            6
+          </div>
+		</td>
+		
+		<td> 
+		<div class="button" style="height: 180px;" onclick="eval()">
+            =
+          </div>
+		</td>
+		
+		
+      </tr>
+      <tr>
+        <td>
+          <div class="button" id="1"  onclick="display(id)">
+            1
+          </div>
+        </td>
+        <td>
+          <div class="button" id="2" onclick="display(id)">
+            2
+          </div>
+		  
+        </td>
+		<td>  
+		<div class="button" id="3" onclick="display(id)">
+            3
+          </div>
+		</td>
+		
+      </tr>
+      <tr>
+        <td colspan="2">
+          <div class="button" id="0" style="width: 160px" onclick="display(id)">
+            0
+          </div>
+        </td>
+        <td>
+          <div class="button"  onclick="update()">
+            .
+          </div>
+		
+      </tr>	  
+    </table>
+
+    <script>
+      var number = 0;
+	  var op1= 0;
+	 var op2= 0;
+	 var op= null;
+      function update(){
+        document.getElementById("monitor").innerHTML = number;
+      }
+      function zero(){
+	  
+		reset();	
+        update();
+		
+      }
+	  
+	  function display(n){
+	  var id= n;
+	  number= document.getElementById(id).innerHTML;
+	  update()
+	  op1= parseInt(number);
+	  
+	  
+	 }
+		function add(){
+			if(document.getElementById("plus").clicked!==true){
+			op2= parseInt(number);
+			op="plus";
+			}else{
+			}
+		}
+		function subtract(){
+			if(document.getElementById("minus").clicked!==true){
+				op2= parseInt(number);
+				op="minus";
+				}else{
+				}
+				
+				}
+		function mult(){
+			if(document.getElementById("times").clicked!=true){
+				op2= parseInt(number);
+				op="times";
+				}else{
+				}
+				
+				}
+		function dvide(){
+			if(document.getElementById("over").clicked!==true){
+				op2= parseInt(number);
+				op="over";
+				}else{
+				}
+				
+				}
+		
+	var result=0;
+      function eval(){
+	  if(op="plus"){
+		result= op1+ op2;
+		number=result;
+		update();
+		reset();
+		}
+		
+					
+				
+			
+		}
+	  
+	  function reset(){
+	  number=0;
+	  op1=0;
+	  op2=0;
+	  }
+    </script>
+  </body>
+</html>
