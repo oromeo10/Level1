@@ -10,13 +10,14 @@ table, th, td {
 	border: 1px solid black;
 	border-collapse: collapse;
 }
+
 div{
 	height:40px;
 	width: 40px;
 	
 }
-#tile{
-	background-color:blue;
+.tile{
+	background-color:red;
 }
 </style>
 
@@ -30,11 +31,12 @@ var rows= 10;;
 var table= '';
 var cols= 10;
 
+
 for(var i=0; i<rows; i++){
 	table += '<tr> ';
 	
 	for(var j=0; j<= cols; j++){
-		table += '<td id="tile">'+'<div>'+'</div>'+'</td>';
+		table += '<td>'+'<div class= "tile">'+'</div>'+'</td>';
 	}
 	
 	table += '</tr>';
