@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title> Game </title>
+<style>
+table, th, td {
+	height: 40px;
+	width: 40px;
+	border: 1px solid black;
+	border-collapse: collapse;
+}
+div{
+	height:40px;
+	width: 40px;
+	
+}
+#tile{
+	background-color:blue;
+}
+</style>
+
+<table>
+</table>
+</head>
+<body>
+<script>
+
+var rows= 10;;
+var table= '';
+var cols= 10;
+
+for(var i=0; i<rows; i++){
+	table += '<tr> ';
+	
+	for(var j=0; j<= cols; j++){
+		table += '<td id="tile">'+'<div>'+'</div>'+'</td>';
+	}
+	
+	table += '</tr>';
+}
+document.write('<table>'+table+'</table>');
+</script>
+</body>
+</html>
