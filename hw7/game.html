@@ -36,12 +36,13 @@ for(var i=0; i<rows; i++){
 	table += '<tr> ';
 	
 	for(var j=0; j<= cols; j++){
-		table += '<td>'+'<div class= "tile">'+'</div>'+'</td>';
+		table += "<td> <div class= 'tile' id='"+i+"_"+j+"'> </div> </td>";
 	}
 	
 	table += '</tr>';
 }
 document.write('<table>'+table+'</table>');
+
 </script>
 </body>
 </html>
