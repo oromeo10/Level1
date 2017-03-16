@@ -30,19 +30,23 @@ div{
 var rows= 10;;
 var table= '';
 var cols= 10;
-
+var color = ['red','green','blue'];
 
 for(var i=0; i<rows; i++){
 	table += '<tr> ';
 	
 	for(var j=0; j<= cols; j++){
-		table += "<td> <div class= 'tile' id='"+i+"_"+j+"'> </div> </td>";
+		table += "<td> <div id='"+i+"_"+j+"' style= 'background-color: red' onclick= 'change()'> </div> </td>";
 	}
 	
 	table += '</tr>';
 }
 document.write('<table>'+table+'</table>');
-
+function change(){
+if(document.getElementById('0_2').style.backgroundColor == "red" ){
+document.getElementById('0_2').style.backgroundColor = color[2];
+}
+}
 </script>
 </body>
 </html>
