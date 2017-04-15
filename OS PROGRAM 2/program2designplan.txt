@@ -27,4 +27,4 @@ int numproc;
 steps:
 initiate variables in main
 
-read from csv to create process objects for each tuple and store in arraylist [loop]
+read from csv to create process objects for each csv process and store in arraylist [loop]
