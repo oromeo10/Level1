@@ -1,0 +1,30 @@
+program design for program 2 
+
+initialization
+
+create class for process{
+	int priority;
+	int subtime;
+	int burst time;
+}
+*note[
+waitingTime = startTime - arrivalTime
+
+turnaroundTime = burstTime + waitingTime = finishTime- arrivalTime
+startTime = Time at which the process started executing
+
+finishTime = Time at which the process finished executing
+]
+
+variables in main:
+double avgWait;
+double avgTround;
+double throughput; 
+
+int numproc;
+
+
+steps:
+initiate variables in main
+
+read from csv to create process objects for each tuple and store in arraylist [loop]
