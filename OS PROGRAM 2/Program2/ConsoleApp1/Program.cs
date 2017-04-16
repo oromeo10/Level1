@@ -16,14 +16,14 @@ namespace ConsoleApp1
             **/
 
             /*
-             * 
-             * before execution, replace below directory 'filedir' with directory of your local sample0 file
+             * DISCLAIMER
+             * DISCLAIMER : before execution, replace below directory 'filedir' with directory of your local sample0 file
              * ||||||||||
              * ||||||||||
              * VVVVVVVVVV
-             * 
-             * 
-             * */
+             *                      |||||||||
+             *                      VVVVVVVVV
+             * */              
             string filedir = "C:/Users/Ryan/Documents/GitHub/Level1/OS PROGRAM 2/examples0.csv";
 
 
@@ -38,29 +38,28 @@ namespace ConsoleApp1
             }
 
             calcWait(prseint);//avg wait time//
-            //avg turnaround time//
-            //throughput//
+            calcTurn(prseint);//avg turnaround time//
+            calcThru(prseint);//throughput//
 
             Console.ReadKey();
         }
 
 
         /*
-         * derive burst times and execution times from result set to perform a subtraction operation amongst both
+         * derive burst times and finish times from result set to perform a subtraction operation amongst both
          * lists to get a resultant list of wait times of each process to sum together and average out
          * |||
          * VVV
          */
         public static void calcWait(List<int> proc) {
-            List<double> btimes = new List<double>();
-            List<double> etimes = new List<double>();
+            List<double> btimes = new List<double>(); ///burst times//
+            List<double> etimes = new List<double>(); //finish times//
             List<double> wtimes = new List<double>();
             double total = 0.0;
             double totalwait = 0.0;
-            for (int i = 0; i <= proc.Count - 1; i+=3) {
+            for (int i = 0; i <= proc.Count - 1; i+=3) {//put burst times into list specifically from sample0//
                 btimes.Add(proc.ElementAt(i+2));
             }
-            
             
             foreach (double num in btimes)
             {
@@ -72,14 +71,104 @@ namespace ConsoleApp1
                 double wait = etimes.ElementAt(j) - btimes.ElementAt(j);
                 wtimes.Add(wait);
                 totalwait += wait;
-            }
+                }
 
             Console.Write("average wait time for processes in queue: " + (totalwait/etimes.Count));
         }
 
 
+        static void calcTurn(List<int> proc) {//Turnaround time is the difference of the sum of burst times and the sum of arrival times, and difference is divided amongst number of processes// 
+            List<double> btimes = new List<double>(); //burst times//
+            List<double> cbtimes = new List<double>(); //cumulative burst times//
+            List<double> subtimes = new List<double>(); //submission times//
+
+            
+            double tbursts = 0.0;
+            double cbursts = 0.0;
+
+            double arr = 0.0;
+
+            for (int i = 0; i <= proc.Count - 1; i += 3)
+            {//put burst times into list specifically from sample0//
+                btimes.Add(proc.ElementAt(i + 2));
+            }
+
+            for (int j = 1; j <= proc.Count - 1; j += 3) {
+                subtimes.Add(proc.ElementAt(j));
+
+            }
+
+            foreach(double bu in btimes) {
+                
+                cbtimes.Add(tbursts + bu);
+                tbursts += bu;
+                
+                
+            }
+
+            foreach (double a in subtimes) {
+               
+                arr += a;
+            }
+
+            Console.WriteLine("\n\n\n");
+            foreach (double sums in cbtimes) {
+                
+                cbursts += sums;
+            }
+
+            double diff = cbursts - arr;
+
+            Console.WriteLine("average turnaround :" +(diff/subtimes.Count() ));
+
+
+
+        }
+
+        static void calcThru(List<int> proc) {
+            List<double> btimes = new List<double>(); //burst times//
+            List<double> cbtimes = new List<double>(); //cumulative burst times//
+           
+
+
+            double tbursts = 0.0;
+            double cbursts = 0.0;
+            
+
+            for (int i = 0; i <= proc.Count - 1; i += 3)
+            {//put burst times into list specifically from sample0//
+                btimes.Add(proc.ElementAt(i + 2));
+            }
+
+         
+
+            foreach (double bu in btimes)
+            {
+
+                cbtimes.Add(tbursts + bu);
+                tbursts += bu;
+
+
+            }
+
+          
+
+            Console.WriteLine("\n\n\n");
+            foreach (double sums in cbtimes)
+            {
+
+                cbursts += sums;
+            }
+
+            Console.WriteLine("\n\nthroughput: " + (btimes.Count()/cbursts));
+            
+
+           
+
+        }
+
         /*
-         * 
+         * extract csv data from file into a data structure for calculation
          * 
          */
         public static string[] GetCsvContent(string iFileName)
