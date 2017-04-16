@@ -27,4 +27,11 @@ int numproc;
 steps:
 initiate variables in main
 
-read from csv to create process objects for each csv process and store in arraylist [loop]
+read from csv to extract data
+
+loop store data in arraylist
+
+loop assign data 3 values at a time to objects 
+
+
+loop store objects in arraylist
