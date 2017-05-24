@@ -15,54 +15,6 @@ CREATE SCHEMA IF NOT EXISTS `Dcoded` DEFAULT CHARACTER SET utf8 ;
 USE `Dcoded` ;
 
 -- -----------------------------------------------------
--- Table `Dcoded`.`Keyblade`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `Dcoded`.`Keyblade` (
-  `K_id` INT NOT NULL AUTO_INCREMENT,
-  `K_name` VARCHAR(45) NOT NULL,
-  `Kdescr` VARCHAR(300) NULL,
-  PRIMARY KEY (`K_id`),
-  UNIQUE INDEX `K_id_UNIQUE` (`K_id` ASC))
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `Dcoded`.`Ability`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `Dcoded`.`Ability` (
-  `Ab_id` INT NOT NULL AUTO_INCREMENT,
-  `Ab_name` VARCHAR(45) NOT NULL,
-  `Description` VARCHAR(300) NULL,
-  PRIMARY KEY (`Ab_id`, `Ab_name`),
-  UNIQUE INDEX `Ab_id_UNIQUE` (`Ab_id` ASC))
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `Dcoded`.`Items`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `Dcoded`.`Items` (
-  `item_id` INT NOT NULL AUTO_INCREMENT,
-  `item_name` VARCHAR(30) NOT NULL,
-  `item_descr` VARCHAR(300) NULL,
-  PRIMARY KEY (`item_id`, `item_name`),
-  UNIQUE INDEX `item_id_UNIQUE` (`item_id` ASC))
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `Dcoded`.`Magic`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `Dcoded`.`Magic` (
-  `spell_id` INT NOT NULL AUTO_INCREMENT,
-  `spell_name` VARCHAR(45) NOT NULL,
-  `spell_descr` VARCHAR(300) NULL,
-  PRIMARY KEY (`spell_id`, `spell_name`),
-  UNIQUE INDEX `spell_id_UNIQUE` (`spell_id` ASC))
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
 -- Table `Dcoded`.`World`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `Dcoded`.`World` (
@@ -72,26 +24,35 @@ CREATE TABLE IF NOT EXISTS `Dcoded`.`World` (
   `world_award` INT NULL,
   `User_notes` VARCHAR(999) NULL,
   PRIMARY KEY (`world_id`, `world_name`),
-  UNIQUE INDEX `world_id_UNIQUE` (`world_id` ASC),
-  INDEX `award_idx` (`world_award` ASC),
-  CONSTRAINT `award`
-    FOREIGN KEY (`world_award`)
-    REFERENCES `Dcoded`.`Ability` (`Ab_id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `award2`
-    FOREIGN KEY (`world_award`)
-    REFERENCES `Dcoded`.`Items` (`item_id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `award3`
-    FOREIGN KEY (`world_award`)
-    REFERENCES `Dcoded`.`Keyblade` (`K_id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `award4`
-    FOREIGN KEY (`world_award`)
-    REFERENCES `Dcoded`.`Magic` (`spell_id`)
+  UNIQUE INDEX `world_id_UNIQUE` (`world_id` ASC))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `Dcoded`.`Rtype`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `Dcoded`.`Rtype` (
+  `type_id` INT(3) NOT NULL,
+  `type_name` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`type_id`),
+  UNIQUE INDEX `type_id_UNIQUE` (`type_id` ASC))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `Dcoded`.`Resource`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `Dcoded`.`Resource` (
+  `res_id` INT NOT NULL AUTO_INCREMENT,
+  `res_name` VARCHAR(45) NOT NULL,
+  `res_descr` VARCHAR(300) NULL,
+  `res_type` INT(3) NULL,
+  PRIMARY KEY (`res_id`),
+  UNIQUE INDEX `res_id_UNIQUE` (`res_id` ASC),
+  INDEX `is_type_idx` (`res_type` ASC),
+  CONSTRAINT `is_type`
+    FOREIGN KEY (`res_type`)
+    REFERENCES `Dcoded`.`Rtype` (`type_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -112,40 +73,40 @@ CREATE TABLE IF NOT EXISTS `Dcoded`.`Menu` (
   `sh_tri` INT NULL,
   UNIQUE INDEX `menu_id_UNIQUE` (`menu_id` ASC),
   PRIMARY KEY (`menu_id`, `menu_name`, `world`),
-  INDEX `equip_idx` (`Equip_key` ASC),
   INDEX `in_idx` (`world` ASC),
-  INDEX `set_idx` (`sh_cross` ASC),
-  INDEX `set2_idx` (`sh_circle` ASC),
-  INDEX `set3_idx` (`sh_square` ASC),
-  INDEX `set4_idx` (`sh_tri` ASC),
-  CONSTRAINT `equip`
-    FOREIGN KEY (`Equip_key`)
-    REFERENCES `Dcoded`.`Keyblade` (`K_id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+  INDEX `shcut_idx` (`sh_cross` ASC),
+  INDEX `short_idx` (`sh_circle` ASC),
+  INDEX `cut_idx` (`sh_square` ASC),
+  INDEX `shortcut_idx` (`sh_tri` ASC),
+  INDEX `key_idx` (`Equip_key` ASC),
   CONSTRAINT `in`
     FOREIGN KEY (`world`)
     REFERENCES `Dcoded`.`World` (`world_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `set`
+  CONSTRAINT `short`
     FOREIGN KEY (`sh_cross`)
-    REFERENCES `Dcoded`.`Magic` (`spell_id`)
+    REFERENCES `Dcoded`.`Resource` (`res_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `set2`
+  CONSTRAINT `short2`
     FOREIGN KEY (`sh_circle`)
-    REFERENCES `Dcoded`.`Magic` (`spell_id`)
+    REFERENCES `Dcoded`.`Resource` (`res_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `set3`
+  CONSTRAINT `short3`
     FOREIGN KEY (`sh_square`)
-    REFERENCES `Dcoded`.`Magic` (`spell_id`)
+    REFERENCES `Dcoded`.`Resource` (`res_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `set4`
+  CONSTRAINT `short4`
     FOREIGN KEY (`sh_tri`)
-    REFERENCES `Dcoded`.`Magic` (`spell_id`)
+    REFERENCES `Dcoded`.`Resource` (`res_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `key`
+    FOREIGN KEY (`Equip_key`)
+    REFERENCES `Dcoded`.`Resource` (`res_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -178,13 +139,7 @@ CREATE TABLE IF NOT EXISTS `Dcoded`.`Chest` (
   `item` INT NOT NULL,
   PRIMARY KEY (`chest_id`),
   UNIQUE INDEX `chest_id_UNIQUE` (`chest_id` ASC),
-  INDEX `inside_idx` (`item` ASC),
   INDEX `within_idx` (`r_location` ASC),
-  CONSTRAINT `inside`
-    FOREIGN KEY (`item`)
-    REFERENCES `Dcoded`.`Items` (`item_id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
   CONSTRAINT `within`
     FOREIGN KEY (`r_location`)
     REFERENCES `Dcoded`.`Room` (`r_id`)
@@ -203,15 +158,9 @@ CREATE TABLE IF NOT EXISTS `Dcoded`.`battle` (
   `User_notes` VARCHAR(999) NULL,
   PRIMARY KEY (`B_id`, `Award`),
   UNIQUE INDEX `B_id_UNIQUE` (`B_id` ASC),
-  INDEX `awards_idx` (`Award` ASC),
   CONSTRAINT `awards`
-    FOREIGN KEY (`Award`)
-    REFERENCES `Dcoded`.`Ability` (`Ab_id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `rewards`
-    FOREIGN KEY (`Award`)
-    REFERENCES `Dcoded`.`Keyblade` (`K_id`)
+    FOREIGN KEY (`B_id`)
+    REFERENCES `Dcoded`.`Resource` (`res_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -226,16 +175,16 @@ CREATE TABLE IF NOT EXISTS `Dcoded`.`Equip_ab` (
   `menu_id` INT NOT NULL,
   PRIMARY KEY (`cust_abid`, `menu_id`),
   UNIQUE INDEX `cust_id_UNIQUE` (`cust_abid` ASC),
-  INDEX `eq_idx` (`ab_id` ASC),
   INDEX `to_idx` (`menu_id` ASC),
-  CONSTRAINT `eq`
-    FOREIGN KEY (`ab_id`)
-    REFERENCES `Dcoded`.`Ability` (`Ab_id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+  INDEX `eq2_idx` (`ab_id` ASC),
   CONSTRAINT `to`
     FOREIGN KEY (`menu_id`)
     REFERENCES `Dcoded`.`Menu` (`menu_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `eq2`
+    FOREIGN KEY (`ab_id`)
+    REFERENCES `Dcoded`.`Resource` (`res_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -251,16 +200,16 @@ CREATE TABLE IF NOT EXISTS `Dcoded`.`Equip_it` (
   `quantity` INT NULL,
   PRIMARY KEY (`Equip_itid`, `menu_id`),
   UNIQUE INDEX `Equip_itid_UNIQUE` (`Equip_itid` ASC),
-  INDEX `equip_idx` (`item_id` ASC),
   INDEX `equip_idx1` (`menu_id` ASC),
-  CONSTRAINT `stock`
-    FOREIGN KEY (`item_id`)
-    REFERENCES `Dcoded`.`Items` (`item_id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+  INDEX `eq_idx` (`item_id` ASC),
   CONSTRAINT `for`
     FOREIGN KEY (`menu_id`)
     REFERENCES `Dcoded`.`Menu` (`menu_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `eq`
+    FOREIGN KEY (`item_id`)
+    REFERENCES `Dcoded`.`Resource` (`res_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
