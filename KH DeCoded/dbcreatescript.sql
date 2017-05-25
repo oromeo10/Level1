@@ -21,7 +21,7 @@ CREATE TABLE IF NOT EXISTS `Dcoded`.`World` (
   `world_id` INT NOT NULL AUTO_INCREMENT,
   `world_name` VARCHAR(45) NOT NULL,
   `battle_lvl` INT NOT NULL,
-  `world_award` INT NULL,
+  `world_award` VARCHAR(45) NULL,
   `User_notes` VARCHAR(999) NULL,
   PRIMARY KEY (`world_id`, `world_name`),
   UNIQUE INDEX `world_id_UNIQUE` (`world_id` ASC))
